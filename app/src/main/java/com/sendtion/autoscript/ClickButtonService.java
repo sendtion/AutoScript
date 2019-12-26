@@ -6,6 +6,7 @@ import android.graphics.Path;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,13 +19,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * 按钮点击事件
+ * 按钮点击事件，屏幕滚动事件
+ * https://blog.csdn.net/weimingjue/article/details/82744146
+ * https://blog.csdn.net/qq_35928566/article/details/86592100
  */
 public class ClickButtonService extends AccessibilityService {
     private final String TAG = getClass().getName();
 
     public static ClickButtonService mService;
-    private int count;
+    private static int count;
 
     //初始化
     @Override
@@ -47,7 +50,7 @@ public class ClickButtonService extends AccessibilityService {
                 scrollView(nextPageInfo);
                 count ++;
                 Log.e("---", "count: " + count);
-                if (count >= 25) {
+                if (count >= 22) {
                     clickView(nextPageInfo);
                 }
             } catch (InterruptedException e) {
@@ -90,6 +93,7 @@ public class ClickButtonService extends AccessibilityService {
         if (nodeInfo != null) {
             if (nodeInfo.isClickable()) {
                 nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                count = 0;
                 return true;
             } else {
                 AccessibilityNodeInfo parent = nodeInfo.getParent();
